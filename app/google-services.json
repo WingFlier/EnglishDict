@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "175169673188",
+    "firebase_url": "https://englishdict-55bd6.firebaseio.com",
+    "project_id": "englishdict-55bd6",
+    "storage_bucket": "englishdict-55bd6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175169673188:android:6f3f97745c05d00e",
+        "android_client_info": {
+          "package_name": "cs_final.com.englishdict"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "175169673188-0k0djt7op563cbnfae2erfks5cv2bq46.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cs_final.com.englishdict",
+            "certificate_hash": "a17436989fdad9bab24a2801bc5c8cb4d5f420d5"
+          }
+        },
+        {
+          "client_id": "175169673188-e6ah0ds9ma4qspf167a3afcnfgije4je.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIaJrqwm1rxpfzoq-uhmuPlVY3leNH3t8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "175169673188-e6ah0ds9ma4qspf167a3afcnfgije4je.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

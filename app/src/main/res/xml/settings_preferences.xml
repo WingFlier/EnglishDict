@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:entries="@array/entry_values_words_count"
+        android:entryValues="@array/entry_values_words_count"
+        android:key="words"
+        android:summary="choose how many words you want to learn "
+        android:title="Words number">
+    </ListPreference>
+    <ListPreference
+        android:entries="@array/entry_values_level"
+        android:entryValues="@array/entry_values_level"
+        android:key="level"
+        android:summary="choose level of the words"
+        android:title="Level">
+    </ListPreference>
+    <ListPreference
+        android:entries="@array/entry_values_categories"
+        android:entryValues="@array/entry_values_categories"
+        android:key="category"
+        android:summary="choose category of the words"
+        android:title="Category">
+    </ListPreference>
+</PreferenceScreen>

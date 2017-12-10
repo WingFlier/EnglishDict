@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="settings_array"/>
+    <string-array name="entry_values_words_count">
+        <item>4</item>
+        <item>8</item>
+        <item>10</item>
+    </string-array>
+    <string-array name="entry_values_categories">
+        <item>adjectives</item>
+        <item>verbs</item>
+        <item>nouns</item>
+        <item>family and friend</item>
+        <item>communication</item>
+    </string-array>
+    <string-array name="entry_values_level">
+        <item>beginner</item>
+        <item>intermediate</item>
+    </string-array>
+</resources>
