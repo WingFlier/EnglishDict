@@ -22,4 +22,11 @@
         android:summary="choose category of the words"
         android:title="Category">
     </ListPreference>
+    <ListPreference
+        android:entries="@array/entry_values_timer"
+        android:entryValues="@array/entry_values_timer"
+        android:key="timer"
+        android:summary="choose time for every word"
+        android:title="Timer length">
+    </ListPreference>
 </PreferenceScreen>

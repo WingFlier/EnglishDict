@@ -1,47 +1,53 @@
 package com.cs_final.englishdict;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.cs_final.englishdict.fragments.MainPageFragment;
-import com.cs_final.englishdict.fragments.SignUpFragment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.cs_final.englishdict.fragments.QuizFragment;
+import com.cs_final.englishdict.fragments.SettingsFragment;
 
 import cs_final.com.englishdict.R;
 
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener
+public class MainActivity extends AppCompatActivity
 {
-    public static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    public static FirebaseUser currentUser = mAuth.getCurrentUser();
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (currentUser == null)
-        {
-            // no user is signed in
-            // function to create user with mail and password
-//            mAuth.createUserWithEmailAndPassword("tiko1581@gmail.com", "abaawkdajk");
-            SignUpFragment fragment = new SignUpFragment();
-            moveToFragment(fragment);
-        } else
-        {
-            Toast.makeText(this, "signed in already", Toast.LENGTH_SHORT).show();
-            // user is signed in
-            MainPageFragment mainPageFragment = MainPageFragment.newInstance(null, null);
-            moveToFragment(mainPageFragment);
-            //change user display name
-//            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-//                    .setDisplayName("user" + Math.random()).build();
-//            currentUser.updateProfile(profileUpdates);
-        }
+        BottomNavigationView navView = (BottomNavigationView)
+                findViewById(R.id.bottom_navigation);
+        navView.setOnNavigationItemSelectedListener
+                (new BottomNavigationView.OnNavigationItemSelectedListener()
+                {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item)
+                    {
+                        Fragment fragment = null;
+                        switch (item.getItemId())
+                        {
+                            case R.id.action_progress:
+                                //fragment = ViewPagerFragment.newInstance(null, null);
+                                Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.action_learn:
+                                fragment = QuizFragment.newInstance(null, null);
+                                break;
+                            case R.id.action_settings:
+                                fragment = new SettingsFragment();
+                                break;
+                        }
+                        if (fragment != null)
+                            moveToFragment(fragment);
+                        return true;
+                    }
+                });
+        navView.setSelectedItemId(R.id.action_learn);
     }
 
     public void moveToFragment(Fragment fragment)
@@ -49,11 +55,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_frame, fragment, null)
                 .commit();
-    }
-
-    @Override
-    public void onClick(View view)
-    {
-        System.out.println("");
     }
 }

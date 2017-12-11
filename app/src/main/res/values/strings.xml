@@ -11,5 +11,8 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="bottom_navigation_settings">Settings</string>
     <string name="learn">Learn</string>
-    <string name="progress">Progress</string>
+    <string name="progress">Review</string>
+    <string name="start_learning_text">Cool! let\'s take a quiz</string>
+    <string name="go_ahead">Go ahead</string>
+    <string name="use_timer">use Timer</string>
 </resources>

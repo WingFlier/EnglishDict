@@ -12,8 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.Toast;
 
 import cs_final.com.englishdict.R;
 
@@ -91,13 +89,10 @@ public class ViewPagerFragment extends Fragment
 
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
-
             @Override
             public void onPageSelected(int position)
             {
                 Log.d("log", "onPageSelected, position = " + position);
-                CheckBox viewWithTag = (CheckBox) pager.findViewWithTag("" + position);
-                Toast.makeText(getContext(), "checked " + viewWithTag.isChecked(), Toast.LENGTH_SHORT).show();
 //                to go back one fragment
 //                if (position == 5) getFragmentManager().popBackStack();
             }

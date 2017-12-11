@@ -61,6 +61,4 @@
                 android:hint="Email"/>
         </LinearLayout>
     </ScrollView>
-
-
 </RelativeLayout>

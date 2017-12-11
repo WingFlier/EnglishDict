@@ -17,5 +17,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
         ((ListPreference) findPreference("words")).setValueIndex(0);
         ((ListPreference) findPreference("level")).setValueIndex(0);
         ((ListPreference) findPreference("category")).setValueIndex(4);
+        ((ListPreference) findPreference("timer")).setValueIndex(0);
     }
 }
