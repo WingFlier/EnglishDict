@@ -12,6 +12,7 @@
         <item>nouns</item>
         <item>family and friend</item>
         <item>communication</item>
+        <item>challenging</item>
     </string-array>
     <string-array name="entry_values_level">
         <item>beginner</item>

@@ -1,5 +1,6 @@
-package com.cs_final.englishdict.sample;
+package com.cs_final.englishdict.fragments;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,9 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.cs_final.englishdict.fragments.QuizFragment;
-import com.cs_final.englishdict.fragments.ViewPagerFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +24,8 @@ public class PageFragment extends Fragment implements View.OnClickListener
     TextView optionA, optionB, optionC, optionD;
     List<TextView> txt;
     int correctWordId;
+    MediaPlayer mPlayerCorrect;
+    MediaPlayer mPlayerWrong;
 
     public static PageFragment newInstance(int page)
     {
@@ -47,6 +47,9 @@ public class PageFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment, null);
+
+        mPlayerCorrect = MediaPlayer.create(getContext(), R.raw.correct);
+        mPlayerWrong = MediaPlayer.create(getContext(), R.raw.wrong);
 
         optionA = view.findViewById(R.id.txt_option_1);
         optionB = view.findViewById(R.id.txt_option_2);
@@ -117,25 +120,32 @@ public class PageFragment extends Fragment implements View.OnClickListener
     {
         if (view.getId() == correctWordId)
         {
+            mPlayerCorrect.start();
             Toast.makeText(getContext(), "good", Toast.LENGTH_SHORT).show();
         } else
-            Toast.makeText(getContext(), "wrong", Toast.LENGTH_SHORT).show();
-        viewPagerSlider.slide();
-
-        /*switch (view.getId())
         {
-            case R.id.txt_option_1:
-                Toast.makeText(getContext(), optionA.getText(), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.txt_option_2:
-                Toast.makeText(getContext(), optionB.getText(), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.txt_option_3:
-                Toast.makeText(getContext(), optionC.getText(), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.txt_option_4:
-                Toast.makeText(getContext(), optionD.getText(), Toast.LENGTH_SHORT).show();
-                break;
-        }*/
+            mPlayerWrong.start();
+            Toast.makeText(getContext(), "wrong", Toast.LENGTH_SHORT).show();
+        }
+        if (ViewPagerFragment.words.size() - 1 == ViewPagerFragment.pager.getCurrentItem())
+        {
+            getParentFragment().getFragmentManager().popBackStackImmediate();
+        }
+        viewPagerSlider.slide();
+//        switch (view.getId())
+//        {
+//            case R.id.txt_option_1:
+//                Toast.makeText(getContext(), optionA.getText(), Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.txt_option_2:
+//                Toast.makeText(getContext(), optionB.getText(), Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.txt_option_3:
+//                Toast.makeText(getContext(), optionC.getText(), Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.txt_option_4:
+//                Toast.makeText(getContext(), optionD.getText(), Toast.LENGTH_SHORT).show();
+//                break;
+//        }
     }
 }

@@ -13,12 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.cs_final.englishdict.CustomViewPager;
 import com.cs_final.englishdict.SwipeDirection;
 import com.cs_final.englishdict.ViewPagerSlider;
-import com.cs_final.englishdict.sample.PageFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,10 +109,11 @@ public class ViewPagerFragment extends Fragment
             }
         });
 
+        pager.setAllowedSwipeDirection(SwipeDirection.right);
         final Handler handler = new Handler();
         if (timer != null)
         {
-            pager.setAllowedSwipeDirection(SwipeDirection.right);
+
             final int delay = Integer.parseInt(timer) * 1000;
             handler.postDelayed(new Runnable()
             {
@@ -156,6 +155,5 @@ public class ViewPagerFragment extends Fragment
     {
         super.onStop();
         onDestroy();
-        Toast.makeText(getContext(), "Quiz canceled", Toast.LENGTH_SHORT).show();
     }
 }

@@ -146,7 +146,8 @@ public class QuizFragment extends Fragment
                                     ViewPagerFragment.newInstance(null, null);
                             viewPagerFragment.setArguments(bundle);
                             getFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_frame, viewPagerFragment, null)
+                                    .add(R.id.fragment_frame, viewPagerFragment, null)
+                                    .addToBackStack(null)
                                     .commit();
                         } catch (Exception e)
                         {
