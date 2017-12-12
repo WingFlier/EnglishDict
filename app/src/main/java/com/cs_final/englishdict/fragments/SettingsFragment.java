@@ -14,9 +14,18 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onCreatePreferencesFix(@Nullable Bundle savedInstanceState, String rootKey)
     {
         setPreferencesFromResource(R.xml.settings_preferences, rootKey);
-        ((ListPreference) findPreference("words")).setValueIndex(0);
-        ((ListPreference) findPreference("level")).setValueIndex(0);
-        ((ListPreference) findPreference("category")).setValueIndex(4);
-        ((ListPreference) findPreference("timer")).setValueIndex(0);
+        ListPreference words = (ListPreference) findPreference("words");
+        ListPreference level = (ListPreference) findPreference("level");
+        ListPreference category = (ListPreference) findPreference("category");
+        ListPreference timer = (ListPreference) findPreference("timer");
+
+        if (words.getValue() == null)
+            words.setValueIndex(0);
+        if (level.getValue() == null)
+            level.setValueIndex(0);
+        if (category.getValue() == null)
+            category.setValueIndex(4);
+        if (timer.getValue() == null)
+            timer.setValueIndex(0);
     }
 }

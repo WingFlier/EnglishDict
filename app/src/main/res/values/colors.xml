@@ -4,9 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#9e9799</color>
     <color name="lightBlue">#6e8489</color>
+    <color name="taskBar">#1b5784</color>
 
 
     <color name="bottomNavBarBackground">#093455</color>
     <color name="bottomNavBarText">#353738</color>
+    <color name="quizWordBackground">#c60f3d54</color>
     <color name="white">#fff</color>
 </resources>

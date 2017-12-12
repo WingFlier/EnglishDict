@@ -1,7 +1,8 @@
-package com.cs_final.englishdict.sample;
+package com.cs_final.englishdict.fragments;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.cs_final.englishdict.CustomViewPager;
+import com.cs_final.englishdict.SwipeDirection;
+import com.cs_final.englishdict.ViewPagerSlider;
+import com.cs_final.englishdict.sample.PageFragment;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import cs_final.com.englishdict.R;
 
@@ -22,41 +32,29 @@ import cs_final.com.englishdict.R;
  */
 public class ViewPagerFragment extends Fragment
 {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    public static ArrayList<HashMap<String, String>> words;
+    private String timer;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    ViewPager pager;
+    static CustomViewPager pager;
     PagerAdapter pagerAdapter;
-
 
     public ViewPagerFragment()
     {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ViewPagerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+    public static ViewPagerSlider viewPagerSlider = new ViewPagerSlider()
+    {
+        @Override
+        public void slide()
+        {
+            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+        }
+    };
+
     public static ViewPagerFragment newInstance(String param1, String param2)
     {
-        ViewPagerFragment fragment = new ViewPagerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new ViewPagerFragment();
     }
 
     @Override
@@ -65,8 +63,8 @@ public class ViewPagerFragment extends Fragment
         super.onCreate(savedInstanceState);
         if (getArguments() != null)
         {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            words = (ArrayList<HashMap<String, String>>) getArguments().getSerializable("words");
+            timer = getArguments().getString("timer");
         }
     }
 
@@ -82,17 +80,19 @@ public class ViewPagerFragment extends Fragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
-        pager = (ViewPager) getView().findViewById(R.id.pager);
+        pager = getView().findViewById(R.id.pager);
 
-        pagerAdapter = new MyFragmentPagerAdapter(getFragmentManager());
+        pagerAdapter = new MyFragmentPagerAdapter(getChildFragmentManager());
+        Log.d("logging_tag", "pages " + pagerAdapter.getCount());
         pager.setAdapter(pagerAdapter);
+        pager.setOffscreenPageLimit(words.size());
 
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
             @Override
             public void onPageSelected(int position)
             {
-                Log.d("log", "onPageSelected, position = " + position);
+                Log.d("logging_tag", "onPageSelected, position = " + position);
 //                to go back one fragment
 //                if (position == 5) getFragmentManager().popBackStack();
             }
@@ -110,12 +110,27 @@ public class ViewPagerFragment extends Fragment
 
             }
         });
+
+        final Handler handler = new Handler();
+        if (timer != null)
+        {
+            pager.setAllowedSwipeDirection(SwipeDirection.right);
+            final int delay = Integer.parseInt(timer) * 1000;
+            handler.postDelayed(new Runnable()
+            {
+                public void run()
+                {
+                    pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+                    handler.postDelayed(this, delay);
+                }
+            }, delay);
+        }
     }
+
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter
     {
-
-        private static final int PAGE_COUNT = 5;
+        private final int PAGE_COUNT = words.size();
 
         public MyFragmentPagerAdapter(FragmentManager fm)
         {
@@ -136,4 +151,11 @@ public class ViewPagerFragment extends Fragment
 
     }
 
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        onDestroy();
+        Toast.makeText(getContext(), "Quiz canceled", Toast.LENGTH_SHORT).show();
+    }
 }

@@ -1,11 +1,16 @@
 package com.cs_final.englishdict;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.cs_final.englishdict.fragments.QuizFragment;
@@ -15,12 +20,19 @@ import cs_final.com.englishdict.R;
 
 public class MainActivity extends AppCompatActivity
 {
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navView = (BottomNavigationView)
+
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.taskBar));
+
+        BottomNavigationView navView =
                 findViewById(R.id.bottom_navigation);
         navView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener()
@@ -48,6 +60,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
         navView.setSelectedItemId(R.id.action_learn);
+
     }
 
     public void moveToFragment(Fragment fragment)
@@ -55,5 +68,11 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_frame, fragment, null)
                 .commit();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        getFragmentManager().popBackStack();
     }
 }

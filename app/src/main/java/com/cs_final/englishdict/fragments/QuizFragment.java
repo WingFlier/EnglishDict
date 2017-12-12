@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import cs_final.com.englishdict.R;
@@ -34,53 +35,28 @@ import cs_final.com.englishdict.R;
  */
 public class QuizFragment extends Fragment
 {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     ArrayList<HashMap<String, String>> goodWords;
     ProgressBar pBar;
     Random random;
     ArrayList<HashMap<String, String>> accurateWord;
     String timer = null;
+    ArrayList<HashMap<String, String>> words;
+    public static List<String> arrayOfWrongWords;
 
     public QuizFragment()
     {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment QuizFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static QuizFragment newInstance(String param1, String param2)
     {
-        QuizFragment fragment = new QuizFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new QuizFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -97,6 +73,7 @@ public class QuizFragment extends Fragment
     {
         goodWords = new ArrayList<>();
         pBar = getView().findViewById(R.id.progress_bar);
+        arrayOfWrongWords = new ArrayList<>();
         getView().findViewById(R.id.btn_start_quiz).setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -146,7 +123,8 @@ public class QuizFragment extends Fragment
                                 timer = defaultSharedPreferences.getString("timer", "5");
 
 
-                            ArrayList<HashMap<String, String>> words = (ArrayList<HashMap<String, String>>) dataSnapshot.getValue();
+                            words = (ArrayList<HashMap<String, String>>) dataSnapshot.getValue();
+                            setWrongWords();
                             for (int i = 0; i < words.size(); i++)
                             {
                                 HashMap<String, String> word = words.get(i);
@@ -155,14 +133,21 @@ public class QuizFragment extends Fragment
                                     accurateWord.add(word);
                                 }
                             }
-                            goodWordsForQuiz(wordsCount);
-
+                            filterWords(wordsCount, Integer.parseInt(wordsCount));
+                            if (goodWords.isEmpty())
+                                return;
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("words", goodWords);
                             bundle.putString("timer", timer);
-                            Toast.makeText(getContext(), bundle.toString(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), bundle.toString(), Toast.LENGTH_SHORT).show();
 
                             hideProgressBar();
+                            ViewPagerFragment viewPagerFragment =
+                                    ViewPagerFragment.newInstance(null, null);
+                            viewPagerFragment.setArguments(bundle);
+                            getFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_frame, viewPagerFragment, null)
+                                    .commit();
                         } catch (Exception e)
                         {
                             e.printStackTrace();
@@ -177,6 +162,19 @@ public class QuizFragment extends Fragment
                 }
             }
 
+            public int wordCountMatchingCategories(ArrayList<HashMap<String, String>> words, String level, String category)
+            {
+                int count = 0;
+                for (HashMap<String, String> word : words)
+                {
+                    if (word.get("level").equals(level) && word.get("category").equals(category))
+                    {
+                        ++count;
+                    }
+                }
+                return count;
+            }
+
             @Override
             public void onCancelled(DatabaseError databaseError)
             {
@@ -185,15 +183,31 @@ public class QuizFragment extends Fragment
         });
     }
 
-    private void goodWordsForQuiz(String wordsCount)
+    public void setWrongWords()
     {
-        for (int i = 0; i < Integer.parseInt(wordsCount); i++)
+        arrayOfWrongWords.clear();
+        for (int i = 0; i < words.size(); i++)
+        {
+            arrayOfWrongWords.add(words.get(i).get("translation"));
+        }
+    }
+
+    private void filterWords(String wordsCount, int leftWordsCount)
+    {
+        if (accurateWord.isEmpty())
+        {
+            Toast.makeText(getContext(), "Sorry, not enough words", Toast.LENGTH_SHORT).show();
+            hideProgressBar();
+            return;
+        }
+
+        for (int i = 0; i < leftWordsCount; i++)
         {
             int index = random.nextInt(accurateWord.size() - 1);
             if (!goodWords.contains(accurateWord.get(index)))
                 goodWords.add(accurateWord.get(index));
         }
         if (goodWords.size() < Integer.parseInt(wordsCount))
-            goodWordsForQuiz(String.valueOf(Integer.parseInt(wordsCount) - goodWords.size()));
+            filterWords(wordsCount, Integer.parseInt(wordsCount) - goodWords.size());
     }
 }
