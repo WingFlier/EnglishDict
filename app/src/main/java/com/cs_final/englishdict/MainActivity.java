@@ -11,8 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
+import com.cs_final.englishdict.fragments.ChartFragment;
 import com.cs_final.englishdict.fragments.QuizFragment;
 import com.cs_final.englishdict.fragments.SettingsFragment;
 
@@ -20,6 +20,8 @@ import cs_final.com.englishdict.R;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final String APP_PREFERENCES = "app_pref";
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,8 +46,7 @@ public class MainActivity extends AppCompatActivity
                         switch (item.getItemId())
                         {
                             case R.id.action_progress:
-                                //fragment = ViewPagerFragment.newInstance(null, null);
-                                Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show();
+                                fragment = ChartFragment.newInstance();
                                 break;
                             case R.id.action_learn:
                                 fragment = QuizFragment.newInstance(null, null);

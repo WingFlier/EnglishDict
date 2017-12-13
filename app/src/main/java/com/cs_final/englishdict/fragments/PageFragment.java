@@ -1,5 +1,7 @@
 package com.cs_final.englishdict.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.cs_final.englishdict.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +30,8 @@ public class PageFragment extends Fragment implements View.OnClickListener
     int correctWordId;
     MediaPlayer mPlayerCorrect;
     MediaPlayer mPlayerWrong;
+    SharedPreferences mySharedPreferences;
+    SharedPreferences.Editor editor;
 
     public static PageFragment newInstance(int page)
     {
@@ -47,6 +53,9 @@ public class PageFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment, null);
+
+        mySharedPreferences = getActivity().getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE);
+        editor = mySharedPreferences.edit();
 
         mPlayerCorrect = MediaPlayer.create(getContext(), R.raw.correct);
         mPlayerWrong = MediaPlayer.create(getContext(), R.raw.wrong);
@@ -122,11 +131,16 @@ public class PageFragment extends Fragment implements View.OnClickListener
         {
             mPlayerCorrect.start();
             Toast.makeText(getContext(), "good", Toast.LENGTH_SHORT).show();
+            int correct = mySharedPreferences.getInt("correct", 0);
+            editor.putInt("correct", ++correct);
         } else
         {
             mPlayerWrong.start();
             Toast.makeText(getContext(), "wrong", Toast.LENGTH_SHORT).show();
+            int wrong = mySharedPreferences.getInt("wrong", 0);
+            editor.putInt("wrong", ++wrong);
         }
+        editor.apply();
         if (ViewPagerFragment.words.size() - 1 == ViewPagerFragment.pager.getCurrentItem())
         {
             getParentFragment().getFragmentManager().popBackStackImmediate();
